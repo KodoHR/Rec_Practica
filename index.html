@@ -348,7 +348,7 @@
   <div class="card idcard">
     <div class="field">
       <label for="nombre">Tu nombre</label>
-      <input type="text" id="nombre" placeholder="Ej: Andrea Zeballos">
+      <input type="text" id="nombre" placeholder="Nombre y apellido">
     </div>
     <div class="field" style="flex:2;">
       <label>Progreso de hoy</label>
@@ -472,8 +472,40 @@
           </div>
         </div>
 
+        <div class="only-b">
+          <p class="mini-label">Documento de Contexto — todo lo que no dice necesariamente la JD pública</p>
+          <div class="full">
+            <label for="p0_ctx_perfil">Perfil ideal (más allá del papel)</label>
+            <textarea id="p0_ctx_perfil"></textarea>
+          </div>
+          <div class="full">
+            <label for="p0_ctx_actitud">Requerimientos actitudinales</label>
+            <textarea id="p0_ctx_actitud"></textarea>
+          </div>
+          <div class="full">
+            <label for="p0_ctx_empresas">Empresas de las que sí puede venir / de las que no puede venir</label>
+            <textarea id="p0_ctx_empresas"></textarea>
+          </div>
+          <div class="full">
+            <label for="p0_ctx_reemplazo">¿Es reemplazo o rol nuevo?</label>
+            <textarea id="p0_ctx_reemplazo"></textarea>
+          </div>
+          <div class="full">
+            <label for="p0_ctx_lider">Cómo es el líder a quien reporta</label>
+            <textarea id="p0_ctx_lider"></textarea>
+          </div>
+          <div class="full">
+            <label for="p0_ctx_equipo">¿Tiene gente a cargo? ¿Cómo es el equipo?</label>
+            <textarea id="p0_ctx_equipo"></textarea>
+          </div>
+          <div class="full">
+            <label for="p0_ctx_momento">En qué momento está el equipo y el negocio en general</label>
+            <textarea id="p0_ctx_momento"></textarea>
+          </div>
+        </div>
+
         <a class="send-btn" href="#" onclick="enviar(0,'Preparación'); return false;">✉ Enviar avance de esta fase</a>
-        <div class="hint">Se abre tu app de mail con todo ya redactado — solo tenés que darle enviar.</div>
+        <div class="hint">Se intenta abrir tu app de mail o Gmail con todo ya redactado. Si no se abre nada, mirá el cuadro que aparece al final de la página con el resumen para copiar.</div>
       </div>
     </div>
   </div>
@@ -589,6 +621,16 @@
     </div>
   </div>
 
+  <div class="card" id="summaryCard" style="display:none;">
+    <label>Resumen para copiar y pegar</label>
+    <textarea id="summaryText" style="min-height:180px; font-family:'Courier New',monospace; font-size:12.5px;" readonly></textarea>
+    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+      <button type="button" class="send-btn" style="border:2px solid var(--black);" onclick="copySummary()">Copiar resumen</button>
+      <a class="send-btn" id="gmailLink" href="#" target="_blank" rel="noopener">Abrir Gmail ↗</a>
+    </div>
+    <div class="hint">Si ninguno de los dos botones de arriba te abrió el mail, copiá este texto y pegalo en un mail o mensaje a canderivetti@kodohr.com, agoshenin@kodohr.com e info@kodohr.com.</div>
+  </div>
+
 </div>
 
 <footer>
@@ -601,13 +643,18 @@ const RECIPIENTS = "canderivetti@kodohr.com,agoshenin@kodohr.com,info@kodohr.com
 const ACTIVE_PHASES = [0,1];
 
 const phaseFields = {
-  0: ['p0_tool','p0_fecha','p0_evaluacion','p0_rol_propio','p0_etapa_propia'],
+  0: ['p0_tool','p0_fecha','p0_evaluacion','p0_rol_propio','p0_etapa_propia',
+      'p0_ctx_perfil','p0_ctx_actitud','p0_ctx_empresas','p0_ctx_reemplazo','p0_ctx_lider','p0_ctx_equipo','p0_ctx_momento'],
   1: ['p1_string','p1_perfil1','p1_perfil2','p1_perfil3','p1_perfil4','p1_perfil5','p1_mensaje','p1_candidato','p1_canal','p1_fecha'],
 };
 
 const fieldLabels = {
   p0_tool:'Herramienta', p0_fecha:'Fecha', p0_evaluacion:'Evaluación del Simulador de Discovery Call',
   p0_rol_propio:'Rol de búsqueda propia', p0_etapa_propia:'Etapa de la búsqueda propia',
+  p0_ctx_perfil:'Perfil ideal', p0_ctx_actitud:'Requerimientos actitudinales',
+  p0_ctx_empresas:'Empresas sí/no', p0_ctx_reemplazo:'Reemplazo o rol nuevo',
+  p0_ctx_lider:'Líder a quien reporta', p0_ctx_equipo:'Gente a cargo / equipo',
+  p0_ctx_momento:'Momento del equipo y del negocio',
   p1_string:'String booleano más exitoso',
   p1_perfil1:'Perfil 1', p1_perfil2:'Perfil 2', p1_perfil3:'Perfil 3', p1_perfil4:'Perfil 4', p1_perfil5:'Perfil 5',
   p1_mensaje:'Mensaje de abordaje',
@@ -712,9 +759,33 @@ function enviar(phaseNum, phaseName){
       body += `${c.checked ? '[x]' : '[ ]'} ${c.parentElement.textContent.trim()}\n`;
     });
   }
-  const subject = encodeURIComponent(`Avance Fase ${phaseNum} — ${phaseName} — ${nombre}`);
+  const subjectRaw = `Avance Fase ${phaseNum} — ${phaseName} — ${nombre}`;
+  const subject = encodeURIComponent(subjectRaw);
   const encodedBody = encodeURIComponent(body);
-  window.location.href = `mailto:${RECIPIENTS}?subject=${subject}&body=${encodedBody}`;
+
+  // 1) Mostramos siempre el resumen + botón Gmail, por si el mail no abre solo.
+  const card = document.getElementById('summaryCard');
+  document.getElementById('summaryText').value = `Para: ${RECIPIENTS}\nAsunto: ${subjectRaw}\n\n${body}`;
+  document.getElementById('gmailLink').href = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(RECIPIENTS)}&su=${subject}&body=${encodedBody}`;
+  card.style.display = 'block';
+  card.scrollIntoView({behavior:'smooth', block:'center'});
+
+  // 2) Intentamos abrir el cliente de mail. Si no hay ninguno configurado, no pasa nada visible,
+  // pero el resumen y el botón de Gmail ya quedaron listos como respaldo.
+  try{
+    window.location.href = `mailto:${RECIPIENTS}?subject=${subject}&body=${encodedBody}`;
+  }catch(e){}
+}
+
+function copySummary(){
+  const ta = document.getElementById('summaryText');
+  ta.select();
+  ta.setSelectionRange(0, 999999);
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(ta.value).catch(() => {});
+  } else {
+    try{ document.execCommand('copy'); }catch(e){}
+  }
 }
 
 function allFieldIds(){
