@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hoja de Ruta — Formación Reclutamiento Estratégico Kodo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0A0A0A;
+    --lime:#C8F000;
+    --white:#FFFFFF;
+    --offwhite:#F2F2F0;
+    --gray:#6b6b68;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Poppins',Arial,sans-serif;
+    background:var(--offwhite);
+    color:var(--black);
+  }
+  header{
+    background:var(--black);
+    color:var(--white);
+    padding:32px 24px 36px;
+    position:relative;
+    overflow:hidden;
+  }
+  header::after{
+    content:"";
+    position:absolute;
+    right:-60px; top:-60px;
+    width:220px; height:220px;
+    border-radius:50%;
+    background:var(--lime);
+    opacity:0.15;
+  }
+  .badge{
+    display:inline-block;
+    background:var(--lime);
+    color:var(--black);
+    font-weight:700;
+    font-size:11px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    padding:6px 14px;
+    border-radius:999px;
+    margin-bottom:14px;
+  }
+  h1{
+    font-size:clamp(26px,5vw,38px);
+    font-weight:800;
+    margin:0 0 8px;
+    line-height:1.05;
+  }
+  h1 span{
+    background:var(--lime);
+    color:var(--black);
+    padding:0 8px;
+    border-radius:6px;
+    display:inline-block;
+    transform:rotate(-1deg);
+  }
+  header p.sub{
+    color:#cfcfcf;
+    font-size:14.5px;
+    max-width:560px;
+    margin:0;
+  }
+  .wrap{
+    max-width:760px;
+    margin:28px auto 60px;
+    padding:0 20px;
+  }
+  .card{
+    background:var(--white);
+    border:2px solid var(--black);
+    border-radius:16px;
+    padding:22px 22px 20px;
+    margin-bottom:24px;
+  }
+  .idcard{
+    display:flex; gap:14px; align-items:flex-end; flex-wrap:wrap;
+  }
+  .field{flex:1; min-width:200px;}
+  label{
+    display:block;
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    color:var(--gray);
+    margin-bottom:6px;
+  }
+  input[type=text], input[type=date], textarea, select{
+    width:100%;
+    font-family:'Poppins',Arial,sans-serif;
+    font-size:14px;
+    padding:10px 12px;
+    border:2px solid var(--black);
+    border-radius:10px;
+    background:var(--white);
+    color:var(--black);
+  }
+  textarea{resize:vertical; min-height:56px;}
+  .progress-wrap{
+    background:#e6e6e3;
+    border:2px solid var(--black);
+    border-radius:999px;
+    height:16px;
+    overflow:hidden;
+    margin-top:10px;
+  }
+  .progress-bar{
+    height:100%;
+    background:var(--lime);
+    width:0%;
+    transition:width .3s ease;
+  }
+  .progress-label{
+    font-size:12px;
+    font-weight:600;
+    color:var(--gray);
+    margin-top:6px;
+  }
+  .phase{
+    background:var(--white);
+    border:2px solid var(--black);
+    border-radius:16px;
+    margin-bottom:18px;
+    overflow:hidden;
+  }
+  .phase-head{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:16px 18px;
+    cursor:pointer;
+    background:var(--white);
+  }
+  .phase-num{
+    width:34px; height:34px;
+    border-radius:50%;
+    background:var(--black);
+    color:var(--lime);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800;
+    font-size:14px;
+    flex-shrink:0;
+  }
+  .phase.done .phase-num{background:var(--lime); color:var(--black);}
+  .phase.locked .phase-num{background:#e2e2e0; color:#9a9a97;}
+  .phase-title{flex:1;}
+  .phase-title strong{display:block; font-size:15.5px;}
+  .phase-title span{font-size:12px; color:var(--gray);}
+  .soon-badge{
+    display:inline-block;
+    background:#e2e2e0;
+    color:#6b6b68;
+    font-size:10.5px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    padding:3px 10px;
+    border-radius:999px;
+    margin-left:8px;
+  }
+  .chevron{
+    font-size:14px;
+    transition:transform .25s ease;
+    color:var(--gray);
+  }
+  .phase.open .chevron{transform:rotate(180deg);}
+  .phase-body{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .3s ease;
+    border-top:2px solid transparent;
+  }
+  .phase.open .phase-body{
+    max-height:2400px;
+    border-top:2px solid var(--black);
+  }
+  .phase-inner{padding:18px;}
+  .checklist{margin-bottom:16px;}
+  .check-item{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    padding:8px 0;
+    border-bottom:1px solid #eee;
+    font-size:14px;
+  }
+  .check-item:last-child{border-bottom:none;}
+  .check-item input{
+    margin-top:3px;
+    width:18px; height:18px;
+    accent-color:var(--lime);
+    flex-shrink:0;
+  }
+  .grid2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin-bottom:12px;
+  }
+  @media (max-width:520px){ .grid2{grid-template-columns:1fr;} }
+  .full{margin-bottom:12px;}
+  .send-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--lime);
+    color:var(--black);
+    border:2px solid var(--black);
+    font-weight:700;
+    font-size:14px;
+    padding:11px 20px;
+    border-radius:999px;
+    cursor:pointer;
+    text-decoration:none;
+    margin-top:6px;
+  }
+  .send-btn:hover{transform:translateY(-2px);}
+  .hint{
+    font-size:12px;
+    color:var(--gray);
+    margin-top:8px;
+    line-height:1.5;
+  }
+  footer{
+    text-align:center;
+    padding:30px 20px 50px;
+    font-size:12.5px;
+    color:var(--gray);
+  }
+  footer strong{color:var(--black);}
+  .ticker{
+    background:var(--lime);
+    color:var(--black);
+    font-weight:700;
+    font-size:11.5px;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    padding:8px 0;
+    text-align:center;
+  }
+  .path-card{
+    background:var(--black);
+    color:var(--white);
+    border-radius:16px;
+    padding:18px 20px;
+    margin-bottom:24px;
+  }
+  .path-card label.path-label{
+    color:#cfcfcf;
+    display:block;
+    margin-bottom:10px;
+  }
+  .path-option{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    padding:10px 0;
+    border-bottom:1px solid #333;
+    font-size:14px;
+    cursor:pointer;
+  }
+  .path-option:last-child{border-bottom:none;}
+  .path-option input{margin-top:3px; width:17px; height:17px; accent-color:var(--lime); flex-shrink:0;}
+  .path-option strong{display:block; font-size:14px;}
+  .path-option span{font-size:12.5px; color:#b8b8b8;}
+  body:not(.path-b) .only-b{display:none;}
+  body.path-b .only-a{display:none;}
+  .tool-instructions{
+    border:2px dashed #ccc;
+    border-radius:12px;
+    padding:14px 16px;
+    margin-bottom:16px;
+    background:#fafaf9;
+  }
+  .tool-instructions ol{
+    margin:0 0 12px;
+    padding-left:20px;
+    font-size:13.5px;
+    line-height:1.6;
+  }
+  .paste-block{
+    background:#1c1c1a;
+    color:#e8e8e5;
+    font-family:'Courier New',monospace;
+    font-size:12px;
+    line-height:1.55;
+    padding:14px;
+    border-radius:10px;
+    white-space:pre-wrap;
+    max-height:260px;
+    overflow-y:auto;
+    margin-bottom:8px;
+  }
+  .copy-btn{
+    background:var(--white);
+    border:2px solid var(--black);
+    border-radius:999px;
+    font-weight:700;
+    font-size:12.5px;
+    padding:7px 16px;
+    cursor:pointer;
+  }
+  .copy-btn:hover{background:var(--lime);}
+  .sim-cta{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--black);
+    color:var(--lime);
+    font-weight:700;
+    font-size:14px;
+    padding:11px 20px;
+    border-radius:999px;
+    text-decoration:none;
+    margin-bottom:14px;
+  }
+  .sim-cta:hover{transform:translateY(-2px);}
+  .mini-label{
+    font-size:12px;
+    font-weight:700;
+    color:var(--gray);
+    margin:0 0 6px;
+  }
+  .perfil-row{margin-bottom:10px;}
+</style>
+</head>
+<body>
+
+<div class="ticker">HOY NOS SENTAMOS EN LA MESA · FORMACIÓN RECLUTAMIENTO ESTRATÉGICO · EDICIÓN 1.26</div>
+
+<header>
+  <span class="badge">Proceso real, punta a punta</span>
+  <h1>Tu <span>Hoja de Ruta</span><br>de tu búsqueda real</h1>
+  <p class="sub">Cada fase que completás acá le llega directo al equipo — no hace falta que mandes un mail aparte. Andá tildando y cargando a medida que avanzás.</p>
+</header>
+
+<div class="wrap">
+
+  <div class="card idcard">
+    <div class="field">
+      <label for="nombre">Tu nombre</label>
+      <input type="text" id="nombre" placeholder="Ej: Andrea Zeballos">
+    </div>
+    <div class="field" style="flex:2;">
+      <label>Progreso de hoy</label>
+      <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+      <div class="progress-label" id="progressLabel">0 de 2 fases de hoy completas</div>
+    </div>
+  </div>
+
+  <div class="path-card">
+    <label class="path-label">¿Qué búsqueda vas a correr?</label>
+    <label class="path-option">
+      <input type="radio" name="camino" id="camino_a" value="a" checked onchange="setCamino('a')">
+      <span><strong>Camino A — la búsqueda preparada por Kodo</strong><span>Centro médico de alto nivel, zona de countries.</span></span>
+    </label>
+    <label class="path-option">
+      <input type="radio" name="camino" id="camino_b" value="b" onchange="setCamino('b')">
+      <span><strong>Camino B — mi propia búsqueda activa</strong><span>Traés la JD y la info de un rol que ya estás corriendo o por empezar.</span></span>
+    </label>
+  </div>
+
+  <!-- FASE 0 -->
+  <div class="phase" id="phase0">
+    <div class="phase-head" onclick="toggle('phase0')">
+      <div class="phase-num">0</div>
+      <div class="phase-title"><strong>Preparación</strong><span>Armá tu Proyecto IA y sumá el contexto de tu búsqueda</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="phase-body">
+      <div class="phase-inner">
+        <div class="checklist">
+          <label class="check-item"><input type="checkbox" data-phase="0" id="p0c1"> Armé mi Proyecto/Gem "Reclutadora Sr. Kodo" en la herramienta que uso</label>
+          <label class="check-item only-a"><input type="checkbox" data-phase="0" id="p0c2"> Practiqué con el Simulador de Discovery Call</label>
+          <label class="check-item only-b"><input type="checkbox" data-phase="0" id="p0c3"> Traje la JD y toda la info disponible de mi búsqueda propia</label>
+        </div>
+
+        <div class="grid2">
+          <div class="field">
+            <label for="p0_tool">Herramienta que usás</label>
+            <select id="p0_tool" onchange="showTool(this.value)">
+              <option value="">Elegir...</option>
+              <option>ChatGPT</option>
+              <option>Claude</option>
+              <option>Gemini</option>
+              <option>Otra</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="p0_fecha">Fecha</label>
+            <input type="date" id="p0_fecha">
+          </div>
+        </div>
+
+        <div id="instr-chatgpt" class="tool-instructions" style="display:none;">
+          <p class="mini-label">Cómo armar tu Proyecto en ChatGPT</p>
+          <ol>
+            <li>Entrá a chatgpt.com y en la barra lateral izquierda tocá "Proyectos".</li>
+            <li>Creá uno nuevo y nombralo "Reclutadora Sr. Kodo — [tu nombre]".</li>
+            <li>Abrí "Instrucciones del proyecto" y pegá el texto de abajo (reemplazando [TU NOMBRE]).</li>
+            <li>Listo. Cada chat nuevo que abras dentro de este proyecto ya arranca con ese contexto.</li>
+          </ol>
+          <div class="paste-block" id="paste-chatgpt"></div>
+          <button type="button" class="copy-btn" onclick="copyText('paste-chatgpt', this)">Copiar texto</button>
+        </div>
+
+        <div id="instr-claude" class="tool-instructions" style="display:none;">
+          <p class="mini-label">Cómo armar tu Proyecto en Claude</p>
+          <ol>
+            <li>Entrá a claude.ai y en la barra lateral izquierda tocá "Proyectos" → "Crear proyecto".</li>
+            <li>Nombralo "Reclutadora Sr. Kodo — [tu nombre]".</li>
+            <li>En las instrucciones del proyecto (o "Project knowledge"), pegá el texto de abajo.</li>
+            <li>Cada chat nuevo dentro de este proyecto ya sabe cómo trabajás. Si usás Cowork, es el mismo concepto ligado a tu carpeta conectada.</li>
+          </ol>
+          <div class="paste-block" id="paste-claude"></div>
+          <button type="button" class="copy-btn" onclick="copyText('paste-claude', this)">Copiar texto</button>
+        </div>
+
+        <div id="instr-gemini" class="tool-instructions" style="display:none;">
+          <p class="mini-label">Cómo armar tu Gem en Gemini</p>
+          <ol>
+            <li>Entrá a gemini.google.com y buscá "Gems" en la barra lateral ("Explorar Gems" → "Crear Gem").</li>
+            <li>Nombralo "Reclutadora Sr. Kodo".</li>
+            <li>En "Instrucciones", pegá el texto de abajo.</li>
+            <li>Guardalo. Queda listo para usar en cada búsqueda nueva.</li>
+          </ol>
+          <div class="paste-block" id="paste-gemini"></div>
+          <button type="button" class="copy-btn" onclick="copyText('paste-gemini', this)">Copiar texto</button>
+        </div>
+
+        <div id="instr-otra" class="tool-instructions" style="display:none;">
+          <p class="mini-label">Con otra herramienta</p>
+          <ol>
+            <li>Fijate si tiene un concepto de "proyecto", "espacio de trabajo" o "asistente personalizado" con instrucciones fijas.</li>
+            <li>Pegá ahí el texto de abajo.</li>
+            <li>Si no existe ese concepto, pegalo al principio de cada chat nuevo que abras para esta búsqueda.</li>
+          </ol>
+          <div class="paste-block" id="paste-otra"></div>
+          <button type="button" class="copy-btn" onclick="copyText('paste-otra', this)">Copiar texto</button>
+        </div>
+
+        <div class="only-a">
+          <p class="mini-label">Simulador de Discovery Call (rol del centro médico)</p>
+          <a class="sim-cta" href="https://kodohr.github.io/Simulador_IA/" target="_blank" rel="noopener">Abrir simulador ↗</a>
+          <div class="full">
+            <label for="p0_evaluacion">Pegá acá la evaluación completa que te dio el simulador al terminar</label>
+            <textarea id="p0_evaluacion" style="min-height:120px;" placeholder="Ej: Resultado 60/100 - Regular. Misión y perfil ideal 80/100, Contexto y urgencia 40/100..."></textarea>
+          </div>
+        </div>
+
+        <div class="grid2 only-b">
+          <div class="field">
+            <label for="p0_rol_propio">Rol de tu búsqueda propia</label>
+            <input type="text" id="p0_rol_propio" placeholder="Ej: Analista de Sistemas Pleno">
+          </div>
+          <div class="field">
+            <label for="p0_etapa_propia">¿En qué etapa está?</label>
+            <select id="p0_etapa_propia">
+              <option value="">Elegir...</option>
+              <option>Por empezar</option>
+              <option>En curso</option>
+            </select>
+          </div>
+        </div>
+
+        <a class="send-btn" href="#" onclick="enviar(0,'Preparación'); return false;">✉ Enviar avance de esta fase</a>
+        <div class="hint">Se abre tu app de mail con todo ya redactado — solo tenés que darle enviar.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FASE 1 -->
+  <div class="phase" id="phase1">
+    <div class="phase-head" onclick="toggle('phase1')">
+      <div class="phase-num">1</div>
+      <div class="phase-title"><strong>Sourcing + Contacto</strong><span>Sesión 5 — búsqueda, selección y copy real</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="phase-body">
+      <div class="phase-inner">
+        <div class="checklist">
+          <label class="check-item"><input type="checkbox" data-phase="1" id="p1c1"> Armé el string booleano de la búsqueda</label>
+          <label class="check-item"><input type="checkbox" data-phase="1" id="p1c2"> Elegí candidatos/as y los revisé contra el tracker (sin duplicar)</label>
+          <label class="check-item"><input type="checkbox" data-phase="1" id="p1c3"> Redacté el mensaje de abordaje con las 4C</label>
+          <label class="check-item"><input type="checkbox" data-phase="1" id="p1c4"> Envié el mensaje real</label>
+        </div>
+
+        <div class="full">
+          <label for="p1_string">String booleano más exitoso</label>
+          <textarea id="p1_string" placeholder='Ej: ("coordinador de centro médico" OR "coordinadora de centro médico") AND salud AND (Córdoba)'></textarea>
+        </div>
+
+        <p class="mini-label">5 perfiles de LinkedIn que contactarías con ese mensaje</p>
+        <div class="perfil-row"><input type="text" id="p1_perfil1" placeholder="Link perfil 1"></div>
+        <div class="perfil-row"><input type="text" id="p1_perfil2" placeholder="Link perfil 2"></div>
+        <div class="perfil-row"><input type="text" id="p1_perfil3" placeholder="Link perfil 3"></div>
+        <div class="perfil-row"><input type="text" id="p1_perfil4" placeholder="Link perfil 4"></div>
+        <div class="perfil-row"><input type="text" id="p1_perfil5" placeholder="Link perfil 5"></div>
+
+        <div class="full">
+          <label for="p1_mensaje">Mensaje de abordaje (texto completo)</label>
+          <textarea id="p1_mensaje" style="min-height:100px;"></textarea>
+        </div>
+
+        <div class="grid2">
+          <div class="field">
+            <label for="p1_candidato">Candidato/a con quien avanzaste el contacto real</label>
+            <input type="text" id="p1_candidato" placeholder="Nombre">
+          </div>
+          <div class="field">
+            <label for="p1_canal">Canal de búsqueda</label>
+            <input type="text" id="p1_canal" placeholder="Ej: LinkedIn X-ray">
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:12px;">
+          <label for="p1_fecha">Fecha de contacto</label>
+          <input type="date" id="p1_fecha">
+        </div>
+
+        <a class="send-btn" href="#" onclick="enviar(1,'Sourcing + Contacto'); return false;">✉ Enviar avance de esta fase</a>
+        <div class="hint only-a">Recordá cargar también los candidatos/as en el tracker compartido para evitar duplicados.</div>
+        <div class="hint only-b">Si tu búsqueda ya está en curso, elegí candidatos/as que ya tengas en pipeline en vez de sourcear desde cero. No hace falta que uses el tracker compartido — es solo para quienes corren la búsqueda de Kodo.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FASE 2 -->
+  <div class="phase locked" id="phase2">
+    <div class="phase-head" onclick="toggle('phase2')">
+      <div class="phase-num">2</div>
+      <div class="phase-title"><strong>Entrevista 1<span class="soon-badge">Próximamente</span></strong><span>Se trabaja en la próxima clase</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="phase-body">
+      <div class="phase-inner">
+        <p class="hint">Esta fase se habilita en la próxima clase — todavía no hace falta completarla.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FASE 3 -->
+  <div class="phase locked" id="phase3">
+    <div class="phase-head" onclick="toggle('phase3')">
+      <div class="phase-num">3</div>
+      <div class="phase-title"><strong>Entrevista 2<span class="soon-badge">Próximamente</span></strong><span>Se trabaja en la próxima clase</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="phase-body">
+      <div class="phase-inner">
+        <p class="hint">Esta fase se habilita en la próxima clase — todavía no hace falta completarla.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FASE 4 -->
+  <div class="phase locked" id="phase4">
+    <div class="phase-head" onclick="toggle('phase4')">
+      <div class="phase-num">4</div>
+      <div class="phase-title"><strong>Informe & Métricas<span class="soon-badge">Próximamente</span></strong><span>Se trabaja en la próxima clase</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="phase-body">
+      <div class="phase-inner">
+        <p class="hint">Esta fase se habilita en la próxima clase — todavía no hace falta completarla.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FASE 5 -->
+  <div class="phase locked" id="phase5">
+    <div class="phase-head" onclick="toggle('phase5')">
+      <div class="phase-num">5</div>
+      <div class="phase-title"><strong>Cierre<span class="soon-badge">Próximamente</span></strong><span>Se trabaja en la próxima clase</span></div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="phase-body">
+      <div class="phase-inner">
+        <p class="hint">Esta fase se habilita en la próxima clase — todavía no hace falta completarla.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Formación Reclutamiento Estratégico by <strong>Kodo</strong> · Edición 1.26 🖤<br>
+  Cada envío llega a canderivetti@kodohr.com, agoshenin@kodohr.com e info@kodohr.com
+</footer>
+
+<script>
+const RECIPIENTS = "canderivetti@kodohr.com,agoshenin@kodohr.com,info@kodohr.com";
+const ACTIVE_PHASES = [0,1];
+
+const phaseFields = {
+  0: ['p0_tool','p0_fecha','p0_evaluacion','p0_rol_propio','p0_etapa_propia'],
+  1: ['p1_string','p1_perfil1','p1_perfil2','p1_perfil3','p1_perfil4','p1_perfil5','p1_mensaje','p1_candidato','p1_canal','p1_fecha'],
+};
+
+const fieldLabels = {
+  p0_tool:'Herramienta', p0_fecha:'Fecha', p0_evaluacion:'Evaluación del Simulador de Discovery Call',
+  p0_rol_propio:'Rol de búsqueda propia', p0_etapa_propia:'Etapa de la búsqueda propia',
+  p1_string:'String booleano más exitoso',
+  p1_perfil1:'Perfil 1', p1_perfil2:'Perfil 2', p1_perfil3:'Perfil 3', p1_perfil4:'Perfil 4', p1_perfil5:'Perfil 5',
+  p1_mensaje:'Mensaje de abordaje',
+  p1_candidato:'Candidato/a (contacto real)', p1_canal:'Canal de búsqueda', p1_fecha:'Fecha de contacto',
+};
+
+const RECLUTADORA_TEMPLATE = `Sos mi copiloto de reclutamiento. Trabajás conmigo, [TU NOMBRE], reclutadora en formación en Kodo HR — consultora de reclutamiento estratégico.
+
+Mi rol es decidir. El tuyo es ayudarme a llegar más rápido y con mejor criterio: analizar perfiles, comparar candidatos, redactar mensajes de abordaje, armar preguntas de entrevista e informes.
+
+Cómo evalúo un candidato o candidata:
+- Priorizo experiencia real y verificable por sobre títulos o palabras clave sueltas.
+- Busco skills transferibles y experiencias equivalentes, no solo coincidencias exactas de cargo o industria.
+- Marco como duda -no como descarte automático- cualquier trayectoria con alta rotación, sin logros concretos, o con vacíos sin explicar. Eso se indaga en la entrevista, no se resuelve solo.
+- Nunca asumas una competencia solo porque aparece una palabra clave en el CV.
+
+Cómo quiero que me respondas:
+- Contexto primero, análisis después. Si te falta información para responder bien, decímelo - no inventes ni completes huecos.
+- Formato claro: tabla comparativa cuando son varios candidatos, lista cuando es una sola cosa.
+- Tono directo, sin relleno.
+- Señalame si una conclusión tuya podría tener algún sesgo, o si te faltó contexto para ser justa con el candidato.
+
+La decisión final siempre es mía. Tu trabajo es darme mejor información y ahorrarme tiempo operativo - no reemplazar mi criterio.`;
+
+function fillPasteBlocks(){
+  ['paste-chatgpt','paste-claude','paste-gemini','paste-otra'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.textContent = RECLUTADORA_TEMPLATE;
+  });
+}
+
+function showTool(val){
+  const map = {ChatGPT:'instr-chatgpt', Claude:'instr-claude', Gemini:'instr-gemini', Otra:'instr-otra'};
+  ['instr-chatgpt','instr-claude','instr-gemini','instr-otra'].forEach(id => {
+    document.getElementById(id).style.display = 'none';
+  });
+  if(map[val]) document.getElementById(map[val]).style.display = 'block';
+}
+
+function copyText(id, btn){
+  const el = document.getElementById(id);
+  const text = el ? el.textContent : '';
+  const done = () => {
+    if(btn){
+      const original = btn.textContent;
+      btn.textContent = '¡Copiado!';
+      setTimeout(() => { btn.textContent = original; }, 1500);
+    }
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(() => {
+      window.prompt('Copiá manualmente (Ctrl/Cmd+C):', text);
+    });
+  } else {
+    window.prompt('Copiá manualmente (Ctrl/Cmd+C):', text);
+  }
+}
+
+function toggle(id){
+  document.getElementById(id).classList.toggle('open');
+}
+
+function safeGet(k){
+  try{ return localStorage.getItem(k); }catch(e){ return null; }
+}
+function safeSet(k,v){
+  try{ localStorage.setItem(k,v); }catch(e){}
+}
+
+function setCamino(val){
+  document.body.classList.toggle('path-b', val === 'b');
+  safeSet('kodo_hdr_camino', val);
+}
+
+function getCaminoLabel(){
+  const b = document.body.classList.contains('path-b');
+  return b ? 'B - búsqueda propia' : 'A - búsqueda preparada por Kodo';
+}
+
+function isVisible(el){
+  const container = el.closest('.only-a, .only-b');
+  if(container && getComputedStyle(container).display === 'none') return false;
+  return true;
+}
+
+function enviar(phaseNum, phaseName){
+  const nombre = document.getElementById('nombre').value || '(sin nombre)';
+  let body = `Alumna: ${nombre}\nCamino: ${getCaminoLabel()}\nFase: ${phaseNum} - ${phaseName}\n\n`;
+  (phaseFields[phaseNum] || []).forEach(id => {
+    const el = document.getElementById(id);
+    if(el){
+      if(!isVisible(el)) return;
+      const val = el.value || '(vacío)';
+      body += `${fieldLabels[id]}: ${val}\n`;
+    }
+  });
+  const checks = document.querySelectorAll(`input[type=checkbox][data-phase="${phaseNum}"]`);
+  if(checks.length){
+    body += `\nChecklist:\n`;
+    checks.forEach(c => {
+      if(!isVisible(c)) return;
+      body += `${c.checked ? '[x]' : '[ ]'} ${c.parentElement.textContent.trim()}\n`;
+    });
+  }
+  const subject = encodeURIComponent(`Avance Fase ${phaseNum} — ${phaseName} — ${nombre}`);
+  const encodedBody = encodeURIComponent(body);
+  window.location.href = `mailto:${RECIPIENTS}?subject=${subject}&body=${encodedBody}`;
+}
+
+function allFieldIds(){
+  let ids = ['nombre'];
+  Object.values(phaseFields).forEach(arr => ids = ids.concat(arr));
+  return ids;
+}
+
+function loadState(){
+  allFieldIds().forEach(id => {
+    const v = safeGet('kodo_hdr_'+id);
+    if(v !== null){
+      const el = document.getElementById(id);
+      if(el) el.value = v;
+    }
+  });
+  document.querySelectorAll('input[type=checkbox]').forEach(cb => {
+    const v = safeGet('kodo_hdr_'+cb.id);
+    if(v === '1') cb.checked = true;
+  });
+  const camino = safeGet('kodo_hdr_camino');
+  if(camino === 'b'){
+    document.getElementById('camino_b').checked = true;
+    setCamino('b');
+  }
+  const toolEl = document.getElementById('p0_tool');
+  if(toolEl && toolEl.value) showTool(toolEl.value);
+  updateProgress();
+}
+
+function updateProgress(){
+  let done = 0;
+  ACTIVE_PHASES.forEach(p => {
+    const allChecks = document.querySelectorAll(`input[type=checkbox][data-phase="${p}"]`);
+    const checks = Array.from(allChecks).filter(isVisible);
+    let isDone;
+    if(checks.length){
+      isDone = checks.every(c => c.checked);
+    } else {
+      const visibleFields = (phaseFields[p] || []).filter(id => {
+        const el = document.getElementById(id);
+        return el && isVisible(el);
+      });
+      isDone = visibleFields.length > 0 && visibleFields.every(id => {
+        const el = document.getElementById(id);
+        return el.value && el.value.trim() !== '';
+      });
+    }
+    if(isDone){
+      done++;
+      document.getElementById('phase'+p).classList.add('done');
+    } else {
+      document.getElementById('phase'+p).classList.remove('done');
+    }
+  });
+  const pct = Math.round((done/ACTIVE_PHASES.length)*100);
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `${done} de ${ACTIVE_PHASES.length} fases de hoy completas`;
+}
+
+document.addEventListener('input', (e) => {
+  if(e.target.id) safeSet('kodo_hdr_'+e.target.id, e.target.value);
+  if(ACTIVE_PHASES.some(p => (phaseFields[p]||[]).includes(e.target.id))) updateProgress();
+});
+document.addEventListener('change', (e) => {
+  if(e.target.type === 'checkbox'){
+    safeSet('kodo_hdr_'+e.target.id, e.target.checked ? '1':'0');
+    updateProgress();
+  }
+});
+
+fillPasteBlocks();
+loadState();
+document.getElementById('phase0').classList.add('open');
+</script>
+
+</body>
+</html>
